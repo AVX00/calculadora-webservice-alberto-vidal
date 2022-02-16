@@ -32,6 +32,10 @@ server.on("request", (req, res) => {
 
   if (req.url.startsWith("/calculator?")) {
     const { a, b } = url.parse(req.url, true).query;
+    if (a === "" || b === "") {
+      res.write(generateHTML("<h1>Params can't be empty</h1>"));
+      res.end();
+    }
     const numbers = [+a, +b];
 
     if (isValidInput(numbers)) {
