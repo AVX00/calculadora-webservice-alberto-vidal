@@ -1,8 +1,9 @@
 require("dotenv").config();
-const serverTalks = require("debug")("server:");
+const serverSays = require("debug")("server:");
 const chalk = require("chalk");
 const http = require("http");
 const url = require("url");
+const { program } = require("commander");
 const { addUtils } = require("./addUtils");
 const { divisionUtils } = require("./divisionUtils");
 const { generateHTML } = require("./generateHTML");
@@ -10,21 +11,31 @@ const { isValidInput } = require("./isValidInput");
 const { productUtils } = require("./productUtils");
 const { substractUtils } = require("./subtractUtils");
 
-const port = process.env.SERVER_PORT;
+program.option("-p, --port <number>");
+program.parse();
+const { port: userPort } = program.opts();
+const port = userPort;
+const defaultPort = process.env.SERVER_PORT;
 const server = http.createServer();
 
-server.listen(port, () =>
-  serverTalks(
-    `server listening in port ${chalk.black.bgWhiteBright(
-      `http://localhost:${port}`
-    )}`
-  )
-);
+const listen = (portToListen) => {
+  server.listen(portToListen, () =>
+    serverSays(
+      `server listening in port ${chalk.black.bgWhiteBright(
+        `http://localhost:${portToListen}`
+      )}`
+    )
+  );
+};
 
-server.on("error", () => serverTalks(chalk.red("ERROR ON SERVER")));
+listen(port || defaultPort);
+
+server.on("error", () => {
+  serverSays(chalk.red("ERROR ON SERVER"));
+});
 
 server.on("request", (req, res) => {
-  serverTalks(
+  serverSays(
     `request at ${chalk.blueBright(req.url)} with method ${chalk.yellow(
       req.method
     )}`
