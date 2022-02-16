@@ -15,6 +15,7 @@ program.option("-p, --port <number>");
 program.parse();
 const { port: userPort } = program.opts();
 const port = userPort;
+const defaultPort = process.env.SERVER_PORT;
 const server = http.createServer();
 
 const listen = (portToListen) => {
@@ -27,7 +28,7 @@ const listen = (portToListen) => {
   );
 };
 
-listen(port);
+listen(port || defaultPort);
 
 server.on("error", () => {
   serverSays(chalk.red("ERROR ON SERVER"));
