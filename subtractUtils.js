@@ -1,10 +1,7 @@
-const subtract = (numbers) => {
-  return numbers.reduce((result, number) => result - number);
-};
+const subtract = (numbers) =>
+  numbers.reduce((result, number) => result - number);
 
 const logSubstract = (numbers) =>
-  `The substraction of ${numbers[1]} to ${numbers[0]} is ${subtract(numbers)}`;
+  `${numbers[1]} - ${numbers[0]} = ${subtract(numbers)}`;
 
-substractUtils = { subtract, logSubstract };
-
-exports.substractUtils = substractUtils;
+exports.substractUtils = { subtract, logSubstract };
